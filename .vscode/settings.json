@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "helper_functions.h": "c",
+        "draw_to_display.h": "c",
+        "random": "c",
+        "structs.h": "c"
+    }
+}

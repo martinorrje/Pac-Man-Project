@@ -1,0 +1,2 @@
+assembly_utility.S.o: assembly_utility.S
+assembly_utility.S :

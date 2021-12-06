@@ -1,0 +1,2 @@
+math.c.o: math.c math.h
+math.c math.h :
