@@ -3,18 +3,19 @@
 void update_ghost(struct Ghost* ghost){
     //Each of these four variables below denote the distance from ghost's current position to pacman's position, calculated using pythagora's theorem
     float rightDist, leftDist, upDist, downDist;
-    int canMove = 1;
+    int canMove;
     int i;
 
-    if(ghost->dir != Left){
+    if(ghost->dir != Left && ghost->pos.x < 123){
+        canMove = 1;
         for(i = 0; i < 4; i++){
-            if(mapPoints[ghost->pos.y + i][ghost->pos.x + 5]) {
+            if(mapPoints[ghost->pos.y + i][ghost->pos.x + 5] == 1) {
                 canMove = 0;
                 break;
             } 
         } 
         if(canMove){
-            rightDist = square_root(power(pacmanX - (ghost->pos.x + 1), 2) + power(pacmanY - ghost->pos.y, 2));
+            rightDist = square_root((float)power(ghost->target.x - (ghost->pos.x + 1), 2) + (float)power(ghost->target.y - ghost->pos.y, 2));
         }
         else{
             rightDist = 10000;
@@ -22,15 +23,16 @@ void update_ghost(struct Ghost* ghost){
     }
     else rightDist = 10000;
         
-    if(ghost->dir != Right){
+    if(ghost->dir != Right && ghost->pos.x > 0){
+        canMove = 1;
          for(i = 0; i < 4; i++){
-            if(mapPoints[ghost->pos.y + i][ghost->pos.x - 1]) {
+            if(mapPoints[ghost->pos.y + i][ghost->pos.x - 1] == 1) {
                 canMove = 0;
                 break;
             } 
         } 
         if(canMove){
-            leftDist = square_root(power(pacmanX - (ghost->pos.x - 1), 2) + power(pacmanY - ghost->pos.y, 2));
+            leftDist = square_root((float)power(ghost->target.x - (ghost->pos.x - 1), 2) + (float)power(ghost->target.y - ghost->pos.y, 2));
         }
         else{
             leftDist = 10000;
@@ -39,14 +41,15 @@ void update_ghost(struct Ghost* ghost){
     else leftDist = 10000;
 
     if(ghost->dir != Down){
+        canMove = 1;
         for(i = 0; i < 5; i++){
-            if(mapPoints[ghost->pos.y - 1][ghost->pos.x + i]) {
+            if(mapPoints[ghost->pos.y - 1][ghost->pos.x + i] == 1) {
                 canMove = 0;
                 break;
             } 
         } 
         if(canMove){
-            upDist = square_root(power(pacmanX - ghost->pos.x, 2) + power(pacmanY - (ghost->pos.y - 1), 2));
+            upDist = square_root((float)power(ghost->target.x - ghost->pos.x, 2) + (float)power(ghost->target.y - (ghost->pos.y - 1), 2));
         }
         else{
             upDist = 10000;
@@ -55,14 +58,15 @@ void update_ghost(struct Ghost* ghost){
     else upDist = 10000;
 
     if(ghost->dir != Up){
+        canMove = 1;
         for(i = 0; i < 5; i++){
-            if(mapPoints[ghost->pos.y + 4][ghost->pos.x + i]) {
+            if(mapPoints[ghost->pos.y + 4][ghost->pos.x + i] == 1) {
                 canMove = 0;
                 break;
             } 
         } 
         if(canMove){
-            downDist = square_root(power(pacmanX - ghost->pos.x, 2) + power(pacmanY - (ghost->pos.y + 1), 2));
+            downDist = square_root((float)power(ghost->target.x - ghost->pos.x, 2) + (float)power(ghost->target.y - (ghost->pos.y + 1), 2));
         }
         else{
             downDist = 10000;
@@ -70,7 +74,7 @@ void update_ghost(struct Ghost* ghost){
     }
     else downDist = 10000;
 
-    if(upDist == 10000 && downDist == 10000 && rightDist == 10000 && leftDist == 10000){        //Ghost is stuck in corner, turn around
+    if(upDist == 10000 && downDist == 10000 && rightDist == 10000 && leftDist == 10000){        //Ghost is stuck in corner, turn around (this never happens after I fixed bug)
         switch(ghost->dir){
             case Up:
                 ghost->dir = Down;

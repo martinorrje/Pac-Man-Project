@@ -33,7 +33,7 @@ int getbtns(void);
 //Debug help functions, mostly taken from lab 3
 extern char textbuffer[4][16];
 extern const uint8_t const font[128*8];
-void display_string(int line, char *s, int stringLength, uint8_t display_buffer[4][128]);
+void display_string(int line, int x, char *s, int stringLength, uint8_t display_buffer[4][128]);
 void display_string_update(void);
 void display_debug( volatile int * const addr );
 static void num32asc( char * s, int n );

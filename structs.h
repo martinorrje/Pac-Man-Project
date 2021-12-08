@@ -8,6 +8,13 @@ enum Direction{
   Down = 3
 };
 
+enum GhostMode{
+  Chase,
+  Scatter,
+  Eaten,
+  Frightened
+};
+
 struct Coord {
   int x;
   int y;
@@ -15,7 +22,10 @@ struct Coord {
 
 struct Ghost {
   struct Coord pos;
+  struct Coord scatterTarget;
+  struct Coord target;
   enum Direction dir;
+  enum GhostMode ghostMode;
 };
 
 #endif

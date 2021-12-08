@@ -3,10 +3,17 @@
 
 #include<stdint.h>
 #include"draw_to_display.h"
+#include"update_display_buffer.h"
 #include"structs.h"
+#include"helper_functions.h"
 #include"math.h"
 
-#define map_size 426
+int scatterTimer;
+int chaseTimer;
+int scatterCount;
+int timer;
+int chaseMode;      //1 if the ghosts are in chase mode, 0 if they are in scatter mode
+int frightenedMode;
 
 //pacman_anim_state will be either 0 or 1, and depending on its value, pacman will have an open or closed mouth
 int pacman_anim_state;
@@ -15,16 +22,18 @@ int pacmanX;
 
 int pacmanY;
 
+int score;
+
 struct Ghost Inky;
 struct Ghost Blinky;
 struct Ghost Pinky;
-struct Ghost Clyde;
 
 uint8_t display_buffer[4][128];
 
 enum Direction pacmanDirection;
 
-void pacman_animation();
+void eat_food(int x, int y);
+void eat_superfood(int x, int y);
 
 void update_pacman();
 
@@ -36,19 +45,21 @@ void user_isr( void );
 
 void enable_interrupt(void);
 
+void update_pinky_target();
+void update_blinky_target();
+void update_inky_target();
+
 extern const struct Coord const pacmanOpen[4][8];
 extern const struct Coord const pacmanClosed[12];
-extern const int mapPoints[32][128];
+extern uint8_t mapPoints[23][128];
 extern const struct Coord const ghostPixels[14];
 
-extern const struct Coord const map[map_size];
-
-void draw_pacman(int x, int y);
-
-void remove_pacman();
-
-void draw_map();
+extern const struct Coord const map[612];
+extern const struct Coord const foods[376];
+extern const struct Coord const superFoods[60];
 
 void check_button_pressed();
+
+void update_score();
 
 #endif

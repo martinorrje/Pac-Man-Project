@@ -29,7 +29,7 @@ void display_string_update(void) {
 	}
 }
 
-void display_string(int line, char *s, int stringLength, uint8_t display_buffer[4][128]) {
+void display_string(int line, int x, char *s, int stringLength, uint8_t display_buffer[4][128]) {
 	int i, k, c;
 	if(line < 0 || line >= 4)
 		return;
@@ -41,7 +41,7 @@ void display_string(int line, char *s, int stringLength, uint8_t display_buffer[
 		if(!c) 
         continue;
     for(k = 0; k < 8; k++)
-				display_buffer[line][16*i + k] = font[c*8 + k] << 1;
+				display_buffer[line][6*i + k + x] = font[c*8 + k] << 1;
     s++;
   }
 }
