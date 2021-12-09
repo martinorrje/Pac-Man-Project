@@ -13,6 +13,7 @@ void eat_food(int x, int y){
     score++;
 }
 
+//TODO: add frightened mode when super food is eaten
 void eat_superfood(int x, int y){
     int i, j;
     if(x == 25){
@@ -34,8 +35,8 @@ void eat_superfood(int x, int y){
         score += 10;
     }
     else if(y == 17 || x == 7){
-        for(i = 4; i <= 7; i++){
-            for(j = 17; j <= 20; j++){
+        for(i = 17; i <= 20; i++){
+            for(j = 4; j <= 7; j++){
                 mapPoints[i][j] = 0;
                 clear_buffer_pixel(j, i, display_buffer);
             }
@@ -47,6 +48,15 @@ void eat_superfood(int x, int y){
             for(j = 92; j <= 95; j++){
                 mapPoints[i][j] = 0;
                 clear_buffer_pixel(j, i, display_buffer);
+            }
+        }
+        score += 10;
+    }
+    else if(x == 30 || y == 15){
+        for(i = 12; i <= 15; i++){
+            for(j = 27; j <= 30; j++){
+                mapPoints[i][j] = 0;
+                clear_buffer_pixel(j, i, display_buffer); 
             }
         }
         score += 10;

@@ -14,6 +14,7 @@ int main() {
 	game_init();
 
 	score = 0;
+	game_over = 0;
 	
 	pacman_anim_state = 0;
 
@@ -45,10 +46,14 @@ int main() {
 	timer = 0;			//Incremented every second to keep track of the different modes	
 
 	clear_display_buffer(display_buffer);
-	display_map(map, 612, display_buffer);
+	display_map(map, 604, display_buffer);
 	display_update(display_buffer);
 
 	while(1){
+		if(game_over){
+			//Show highscore menu
+		}
+
 		check_button_pressed();
 	}
 

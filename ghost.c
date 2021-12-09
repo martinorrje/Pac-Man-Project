@@ -99,17 +99,29 @@ void update_ghost(struct Ghost* ghost){
     if(upDist <= rightDist && upDist <= leftDist && upDist <= downDist){
         ghost->dir = Up;
         ghost->pos.y--;
+        if(0){
+            game_over = 1;
+        }
     }
     else if (downDist <= upDist && downDist <= leftDist && downDist <= rightDist){
         ghost->dir = Down;
         ghost->pos.y++;
+        if(0){
+            game_over = 1;
+        }
     }
     else if(rightDist <= leftDist && rightDist <= upDist && rightDist <= downDist){
         ghost->dir = Right;
         ghost->pos.x++;
+        if(0){
+            game_over = 1;
+        }
     }
     else{
         ghost->dir = Left;
         ghost->pos.x--;
+        if(0){
+            game_over = 1;
+        }
     }
 }
