@@ -263,7 +263,7 @@ void view_highscore_menu(){
   if(game_over && !restart_game){
     currentName[nameIndex] = currentChar;
     i = 0;
-    while(score < score_board[i]) i++;
+    while(i < 4 && score < score_board[i]) i++;
     if(i < 4){        //If it's >= 4 then it should not be written to score board
       int j;
       for(j = 3; j > i; j--) {
