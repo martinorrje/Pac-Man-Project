@@ -10,11 +10,31 @@ int main() {
 	display_control_init();
 
 	init_buttons();
+	init_switches();
 
 	game_init();
 
 	score = 0;
 	game_over = 0;
+	restart_game = 0;
+	int i;
+
+	for(i = 0; i < 4; i++){
+		score_board[i] = 0;
+		score_board_names[i][0] = 'A';
+		score_board_names[i][1] = 'A';
+		score_board_names[i][2] = 'A';
+		score_board_names[i][3] = 'A';
+	}
+
+	currentName[0] = 'A';
+	currentName[1] = 'A';
+	currentName[2] = 'A';
+	currentName[3] = 'A';
+	currentName[4] = '\0';
+
+	nameIndex = 0;
+	currentChar = 'A';
 	
 	pacman_anim_state = 0;
 
@@ -50,11 +70,8 @@ int main() {
 	display_update(display_buffer);
 
 	while(1){
-		if(game_over){
-			//Show highscore menu
-		}
-
 		check_button_pressed();
+		check_switches();
 	}
 
 	return 0;

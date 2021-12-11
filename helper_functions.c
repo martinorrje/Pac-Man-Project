@@ -142,8 +142,16 @@ void init_buttons(){
 	TRISFSET = 0b10;				//Set bit 1 of port F to input, this is btn1
 }
 
+void init_switches(){
+	TRISDSET = (0b1111) << 8;		//Set bits 8-11 to 1, these are switches 1-4
+}
+
 int getbtns(void){
     int buttons = ((0b111 << 5) & PORTD) >> 5;     //First mask bits 5-7 of PORTD and then shift the resulting integer 5 steps to the right, then mask the least significant 3 bits
 	buttons |= (PORTF & 0b10) << 2;	
 	return buttons;
  }
+
+int getsw( void ){
+	return (0xF00 & PORTD) >> 8;     //First mask bits 8-11 of PORTD and then shift the resulting integer 8 steps to the right, then mask the least significant 4 bits
+}

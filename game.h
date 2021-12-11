@@ -9,6 +9,13 @@
 #include"math.h"
 
 int game_over;
+int restart_game;
+int view_highscore;
+int* score_board;
+int nameIndex;
+char* currentName;
+char** score_board_names;
+char currentChar;
 
 int scatterTimer;
 int chaseTimer;
@@ -38,10 +45,12 @@ void eat_food(int x, int y);
 void eat_superfood(int x, int y);
 
 void update_pacman();
+void update_ghosts();
 
 void update_ghost();
 
 void game_init();
+void game_start();
 
 void user_isr( void ); 
 
@@ -54,6 +63,7 @@ void update_inky_target();
 extern const struct Coord const pacmanOpen[4][8];
 extern const struct Coord const pacmanClosed[12];
 extern uint8_t mapPoints[23][128];
+extern const uint8_t const mapPoints_copy[23][128];
 extern const struct Coord const ghostPixels[14];
 
 extern const struct Coord const map[604];
@@ -61,7 +71,10 @@ extern const struct Coord const foods[376];
 extern const struct Coord const superFoods[60];
 
 void check_button_pressed();
+void check_switches();
 
 void update_score();
+void select_highscore_name();
+void view_highscore_menu();
 
 #endif
