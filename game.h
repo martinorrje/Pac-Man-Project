@@ -47,7 +47,7 @@ void eat_superfood(int x, int y);
 void update_pacman();
 void update_ghosts();
 
-void update_ghost();
+void update_ghost_mode();
 
 void game_init();
 void game_start();
