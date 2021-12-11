@@ -210,14 +210,14 @@ void check_button_pressed(){
   if((buttonPressed = getbtns())){
     if(buttonPressed & 0b1000){           //BTN1 was pressed
       pacmanDirection = Right;
-      if(game_over){
+      if(game_over && !restart_game){
         currentName[nameIndex] = currentChar;
         nameIndex = (nameIndex + 1) % 4;
       }
     }
     if(buttonPressed & 0b1) {         //BTN2 was pressed
       pacmanDirection = Left;
-      if(game_over){
+      if(game_over && !restart_game){
         currentName[nameIndex] = currentChar;
         nameIndex--;
         if(nameIndex < 0) nameIndex = 3;
@@ -225,14 +225,14 @@ void check_button_pressed(){
     }   
     if(buttonPressed & 0b10) {        //BTN3 was pressed
       pacmanDirection = Down;
-      if(game_over){
+      if(game_over && !restart_game){
         currentChar--;
         if(currentChar < 65) currentChar = 90;
       }
     }
     if(buttonPressed & 0b100){         //BTN4 was pressed
       pacmanDirection = Up;
-      if(game_over){
+      if(game_over && !restart_game){
         currentChar++;
         if(currentChar > 90) currentChar = 65;
       }
