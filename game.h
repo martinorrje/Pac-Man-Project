@@ -11,10 +11,10 @@
 int game_over;
 int restart_game;
 int view_highscore;
-int* score_board;
+int score_board[4];
 int nameIndex;
-char* currentName;
-char** score_board_names;
+char currentName[5];
+char score_board_names[4][5];
 char currentChar;
 
 int scatterTimer;

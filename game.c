@@ -152,6 +152,8 @@ void update_inky_target(){
 
 void user_isr( void ) {
   if(IFS(0) & (1 << 8)){
+      IFS(0) &= ~(1 << 8);   //reset interrupt timer overflow status flag
+
     if(view_highscore) {
       view_highscore_menu();
       return;
@@ -165,7 +167,6 @@ void user_isr( void ) {
       return;
     }
 
-    IFS(0) &= ~(1 << 8);   //reset interrupt timer overflow status flag
 
     timer++;
     if(timer == 5){
@@ -259,19 +260,25 @@ void select_highscore_name(){
 
 void view_highscore_menu(){
   clear_display_buffer(display_buffer);
-  int i;
+  int i,p;
   if(game_over && !restart_game){
     currentName[nameIndex] = currentChar;
     i = 0;
-    while(i < 4 && score < score_board[i]) i++;
+    while(i < 4 && score < score_board[i]) {
+      i++;
+    }
     if(i < 4){        //If it's >= 4 then it should not be written to score board
       int j;
       for(j = 3; j > i; j--) {
         score_board[j] = score_board[j-1];
-        score_board_names[j] = score_board_names[j-1];
+        for(p = 0; p < 4; p++){
+          score_board_names[j][p] = score_board_names[j-1][p];
+        }
       }
       score_board[i] = score;
-      score_board_names[i] = currentName;
+      for(p = 0; p < 4; p++){
+        score_board_names[i][p] = currentName[p];
+      }
     }
     restart_game = 1;
   }

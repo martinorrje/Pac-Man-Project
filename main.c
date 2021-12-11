@@ -25,6 +25,7 @@ int main() {
 		score_board_names[i][1] = 'A';
 		score_board_names[i][2] = 'A';
 		score_board_names[i][3] = 'A';
+		score_board_names[i][4] = '\0';
 	}
 
 	currentName[0] = 'A';
