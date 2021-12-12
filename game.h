@@ -11,6 +11,8 @@
 int game_over;
 int restart_game;
 int view_highscore;
+int from_highscore;
+int prev_switch;
 int score_board[4];
 int nameIndex;
 char currentName[5];
@@ -19,6 +21,7 @@ char currentChar;
 
 int scatterTimer;
 int chaseTimer;
+int frightenedTimer;
 int scatterCount;
 int timer;
 int chaseMode;      //1 if the ghosts are in chase mode, 0 if they are in scatter mode

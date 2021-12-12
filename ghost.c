@@ -124,4 +124,14 @@ void update_ghost(struct Ghost* ghost){
             game_over = 1;
         }
     }
+
+    if (ghost->pos.x - pacmanX <= 2 && pacmanX - ghost->pos.x <= 2 && ghost->pos.y - pacmanY <= 2 && pacmanY - ghost->pos.y <= 2){
+        if(frightenedMode){
+            score += 100;
+            ghost->pos.x = 62;
+            ghost->pos.y = 1;
+        }else{
+            game_over=1;
+        }
+    }
 }
