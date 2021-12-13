@@ -61,6 +61,9 @@ void eat_superfood(int x, int y){
         }
         score += 10;
     }
+
+    frightenedMode = 1;
+    frightenedTimer = 12;
 }
 
 void update_pacman(){

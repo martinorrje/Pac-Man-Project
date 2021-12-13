@@ -87,6 +87,12 @@ void update_ghost_mode(){
     chaseTimer = 20;
     scatterTimer = 8;
   }
+  if(frightenedMode){
+    chaseMode = 0;
+    Pinky.target = Pinky.scatterTarget;
+    Inky.target = Inky.scatterTarget;
+    Blinky.target = Blinky.scatterTarget;
+  }
 
   if(!chaseMode && scatterTimer == 0){
     scatterCount--;
@@ -158,21 +164,35 @@ void user_isr( void ) {
       view_highscore_menu();
       return;
     }
+    if(restart_game){
+      game_start();
+      return;
+    }
     if(game_over) {
       select_highscore_name();
       return;
     }
-    if(restart_game){
-      game_start();
-      return;
+    if(from_highscore){
+      clear_display_buffer(display_buffer);
+	    display_map(map, 604, display_buffer);
+      from_highscore = 0;
     }
 
 
     timer++;
     if(timer == 5){
       timer = 0;
+      if(frightenedMode){
+        if(frightenedTimer>0)frightenedTimer--;
+        else{
+        frightenedMode = 0;
+        chaseMode = 1;
+        chaseTimer = 20;
+        } 
+      }
       if(chaseMode && scatterCount > 0) chaseTimer--;
       else scatterTimer--;
+      
     }
 
     update_ghost_mode();
@@ -190,7 +210,7 @@ void user_isr( void ) {
 
 void update_score(){
   display_string(3, 0, "score:", 7, display_buffer);
-  display_string(3, 37, itoaconv(score), 3, display_buffer);
+  display_string(3, 37, itoaconv(score), 4, display_buffer);
 }
 
 void game_init(){
@@ -211,34 +231,42 @@ void check_button_pressed(){
   if((buttonPressed = getbtns())){
     if(buttonPressed & 0b1000){           //BTN1 was pressed
       pacmanDirection = Right;
-      if(game_over && !restart_game){
-        currentName[nameIndex] = currentChar;
-        nameIndex = (nameIndex + 1) % 4;
-      }
     }
     if(buttonPressed & 0b1) {         //BTN2 was pressed
       pacmanDirection = Left;
-      if(game_over && !restart_game){
-        currentName[nameIndex] = currentChar;
-        nameIndex--;
-        if(nameIndex < 0) nameIndex = 3;
-      }
     }   
     if(buttonPressed & 0b10) {        //BTN3 was pressed
       pacmanDirection = Down;
-      if(game_over && !restart_game){
-        currentChar--;
-        if(currentChar < 65) currentChar = 90;
-      }
     }
     if(buttonPressed & 0b100){         //BTN4 was pressed
       pacmanDirection = Up;
-      if(game_over && !restart_game){
-        currentChar++;
-        if(currentChar > 90) currentChar = 65;
-      }
     }
   }
+}
+
+void change_name(){
+  int buttonPressed = 0;
+  if((buttonPressed = getbtns())){          //BTN1 was pressed
+    if(buttonPressed & 0b1000){
+        nameIndex = (nameIndex + 1) % 4;
+        currentChar = currentName[nameIndex];
+    }
+    if(buttonPressed & 0b1) {         //BTN2 was pressed
+        nameIndex--;
+        if(nameIndex < 0) nameIndex = 3;
+        currentChar = currentName[nameIndex];
+    }   
+    if(buttonPressed & 0b10) {        //BTN3 was pressed
+        currentChar--;
+        if(currentChar < 65) currentChar = 90;
+        currentName[nameIndex] = currentChar;
+    }
+    if(buttonPressed & 0b100){         //BTN4 was pressed
+        currentChar++;
+        if(currentChar > 90) currentChar = 65;
+        currentName[nameIndex] = currentChar;
+    }
+  } 
 }
 
 void check_switches(){
@@ -249,10 +277,15 @@ void check_switches(){
   else {
     view_highscore = 0;
   }
+  if((switches & 2) != (prev_switch & 2)){
+    restart_game = 1;
+  }
+  prev_switch = switches;
 }
 
 void select_highscore_name(){
   clear_display_buffer(display_buffer);
+  change_name();
   display_string(1, 10, "Write your name: ", 18, display_buffer);
   display_string(2, 10, currentName, 5, display_buffer);
   display_update(display_buffer);
@@ -285,7 +318,10 @@ void view_highscore_menu(){
 
   for(i = 0; i < 4; i++){
     display_string(i, 10, score_board_names[i], 5, display_buffer);
-    display_string(i, 70, itoaconv(score_board[i]), 3, display_buffer);
+    display_string(i, 70, itoaconv(score_board[i]), 4, display_buffer);
+  }
+  if(!game_over){
+    from_highscore = 1;
   }
   display_update(display_buffer);
 }
