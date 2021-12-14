@@ -2,6 +2,7 @@
 #include <pic32mx.h>  /* Declarations of system-specific addresses etc */
 #include"game.h"
 
+//Function for starting the game. It resets all the variables that needs to be reset so the game can work as intended.
 void game_start(){
   currentName[0] = 'A';
   currentName[1] = 'A';
@@ -47,6 +48,7 @@ void game_start(){
 
   clear_display_buffer(display_buffer);
 	display_map(map, 604, display_buffer);
+  //Adds new map from a copy of the old map (with new foods etc)
   int i, j;
   for(i = 0; i < 23; i++){
     for(j = 0; j < 128; j++){
@@ -57,6 +59,7 @@ void game_start(){
 	display_update(display_buffer);
 }
 
+//Updates the ghosts on the OLED
 void update_ghosts(){
   clear_entity(ghostPixels, 14, Inky.pos.x, Inky.pos.y, display_buffer);    
   clear_entity(ghostPixels, 14, Blinky.pos.x, Blinky.pos.y, display_buffer); 
@@ -71,6 +74,7 @@ void update_ghosts(){
   update_entity(ghostPixels, 14, Pinky.pos.x, Pinky.pos.y, display_buffer);
 }
 
+//Function 
 void update_ghost_mode(){
   if(chaseMode && chaseTimer > 0){
     update_pinky_target();
@@ -87,6 +91,7 @@ void update_ghost_mode(){
     chaseTimer = 20;
     scatterTimer = 8;
   }
+  //Set to frightenedMode
   if(frightenedMode){
     chaseMode = 0;
     Pinky.target = Pinky.scatterTarget;
@@ -103,6 +108,7 @@ void update_ghost_mode(){
   }
 }
 
+//Updates pinky's target in chase mode
 void update_pinky_target(){
   switch(pacmanDirection){
       case Up:  
@@ -124,6 +130,7 @@ void update_pinky_target(){
     }
 }
 
+//Updates blinky's target in chase mode
 void update_blinky_target(){
   struct Coord baseTarget;
   switch(pacmanDirection){
@@ -151,11 +158,13 @@ void update_blinky_target(){
   Blinky.target.y = baseTarget.y + (-1*differenceY);
 }
 
+//Updates inky's target in chase mode
 void update_inky_target(){
   Inky.target.x = pacmanX;
   Inky.target.y = pacmanY;
 }
 
+//Updates all entities and the OLED with different menues and works by interupt timer.
 void user_isr( void ) {
   if(IFS(0) & (1 << 8)){
       IFS(0) &= ~(1 << 8);   //reset interrupt timer overflow status flag
@@ -208,6 +217,7 @@ void user_isr( void ) {
   }
 }
 
+//Updates the score in the bottom left of the screen.
 void update_score(){
   display_string(3, 0, "score:", 7, display_buffer);
   display_string(3, 37, itoaconv(score), 4, display_buffer);
@@ -225,6 +235,7 @@ void game_init(){
     IPC(2) |=  0b1100;   //set priority of timer 2
 }
 
+//Function for checking which button is pressed, and by extension which direction to turn pacman
 void check_button_pressed(){
     //Check if any button has been pressed
   int buttonPressed = 0;
@@ -244,6 +255,7 @@ void check_button_pressed(){
   }
 }
 
+//Function for changing the name on the name input screen.
 void change_name(){
   int buttonPressed = 0;
   if((buttonPressed = getbtns())){          //BTN1 was pressed
@@ -269,6 +281,7 @@ void change_name(){
   } 
 }
 
+//Function for checking which switches are turned on and making sure when they are turned on corresponding event happens.
 void check_switches(){
   int switches = getsw();
   if(switches & 1){   //Switch 1 is turned on
@@ -283,6 +296,7 @@ void check_switches(){
   prev_switch = switches;
 }
 
+//Function for inputing the players name to later be used in the highscore.
 void select_highscore_name(){
   clear_display_buffer(display_buffer);
   change_name();
@@ -291,6 +305,7 @@ void select_highscore_name(){
   display_update(display_buffer);
 }
 
+//Function for viewing the highscore.
 void view_highscore_menu(){
   clear_display_buffer(display_buffer);
   int i,p;

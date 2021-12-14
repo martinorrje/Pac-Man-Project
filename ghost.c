@@ -125,6 +125,7 @@ void update_ghost(struct Ghost* ghost){
         }
     }
 
+    //Collision detection
     if (ghost->pos.x - pacmanX <= 2 && pacmanX - ghost->pos.x <= 2 && ghost->pos.y - pacmanY <= 2 && pacmanY - ghost->pos.y <= 2){
         if(frightenedMode){
             score += 100;

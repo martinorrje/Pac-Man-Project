@@ -70,6 +70,7 @@ int main() {
 	display_map(map, 604, display_buffer);
 	display_update(display_buffer);
 
+	//Main loop
 	while(1){
 		check_button_pressed();
 		check_switches();
